@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "nethys_better_preview",
+  "version": "1.0",
+
+  "description": "Makes the preview window of archive of nethys (pathfinder 2e) better and navigable",
+
+  "icons": {
+    "48": "icons/nethysMaskIcon.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "nethys_better_preview@example.com"
+    }
+  },
+
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.2e.aonprd.com/*"],
+      "js": ["nethys_better_preview.js"]
+    }
+  ]
+}
