@@ -22,14 +22,27 @@ let onMouseOver = (clonePreview) => {
 
 // From the clone preview, we extract the url used in the title element
 // We get all <a> elements that uses this url as href 
-let searchForLinkElements = (clonePreview) => {
+// Then we add an event saying that as soon as the mouse leaves the a element, we remove the preview (TODO: add timer; if mouse enter preview then do not remove OR calculate if mouse go away ? (HARD))
+let markRelatedLinkElements = (clonePreview) => {
 	titleElement = clonePreview.getElementsByClassName("title")[0];
 
 	// The title element is structured like this : <title><wrap div> <a> </wrap div></title>
+	// We mark it to avoid mistaking the element for the original <a> tag
 	previewLinkElement = titleElement.children[0].children[0];
-	urlSource = previewLinkElement.getAttribute("href");
+	previewLinkElement.id = "previewLinkElement";
+	urlSource = previewLinkElement.href;
 
-	return document.querySelectorAll("a[href='"+ urlStringSource +"']");
+	nodeListOfLinks = document.querySelectorAll("a[href='"+ urlSource +"']");
+	for (let i = 0; i < nodeListOfLinks.length; ++i) {
+		
+		linkNode = nodeListOfLinks[i];
+		// if the node is a element and is NOT the preview link element (we wisely marked :) )
+		if (linkNode.nodeType === 1 && linkNode.id !== "previewLinkElement") {
+			linkNode.addEventListener('mouseleave', () => {
+				onMouseLeavingHref(clonePreview);
+			});
+		}
+	}
 }
 
 // We clone the original preview, we add events to customize the behavior
@@ -52,7 +65,8 @@ let transformPreview = (previewElement) => {
 	});
 
 
-	linkElements = searchForLinkElement(clonePreview)
+	markRelatedLinkElements(clonePreview);
+
 
 	let previewStyle = clonePreview.style;
 	previewStyle.setProperty("pointer-events", "auto");
