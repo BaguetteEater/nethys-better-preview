@@ -14,6 +14,9 @@
       "id": "nethys_better_preview@example.com"
     }
   },
+  "web_accessible_resources": [
+    "nethys_better_preview.js",
+  ],
 
 
   "content_scripts": [
